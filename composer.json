@@ -1,0 +1,22 @@
+{
+    "name": "priskz/sorad-service",
+    "description": "Generic implementation(s) for SORAD's service layer.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+          "name": "Zachary Prisk",
+          "email": "zachary.prisk@gmail.com"
+        }
+    ],
+    "require": {
+        "priskz/payload": "~0.0.1",
+        "priskz/sorad-service-provider": "~0.0.1",
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Priskz\\SORAD\\Service\\": "src/Priskz/SORAD/Service"
+        }
+    }
+}
