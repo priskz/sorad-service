@@ -23,7 +23,7 @@ class GenericService
 		$this->alias = $alias;
 
 		// If a custom processor is not given then use the default generic Laravel\Processor.
-		if ($processor === null)
+		if($processor === null)
 		{
 			$processor = App::make(Processor::class);
 		}
