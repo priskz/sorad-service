@@ -1,4 +1,6 @@
-<?php namespace Priskz\SORAD\Service\Processor\Laravel;
+<?php
+
+namespace Priskz\SORAD\Service\Processor\Laravel;
 
 use App;
 use Priskz\SORAD\Service\Processor\Laravel\Validator;

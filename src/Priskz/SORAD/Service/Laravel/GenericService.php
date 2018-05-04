@@ -1,4 +1,6 @@
-<?php namespace Priskz\SORAD\Service\Laravel;
+<?php
+
+namespace Priskz\SORAD\Service\Laravel;
 
 use App;
 use Priskz\SORAD\Service\Processor\Laravel\Processor;

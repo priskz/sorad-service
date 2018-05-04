@@ -1,4 +1,6 @@
-<?php namespace Priskz\SORAD\Service\Processor;
+<?php
+
+namespace Priskz\SORAD\Service\Processor;
 
 /**
  * A Validator is just a way to check to see if an array of values

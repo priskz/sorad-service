@@ -1,4 +1,6 @@
-<?php namespace Priskz\SORAD\Service\Processor;
+<?php
+
+namespace Priskz\SORAD\Service\Processor;
 
 use Priskz\Payload\Payload;
 use Priskz\SORAD\Service\Processor\ProcessorInterface;
