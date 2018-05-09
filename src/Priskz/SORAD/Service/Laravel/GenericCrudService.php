@@ -84,10 +84,17 @@ abstract class GenericCrudService extends GenericService
 	 *
 	 * @return Payload
 	 */
-	public function get($filter = [], $sort = [], $field = [], $embed = [])
+	public function get($data = [])
 	{
-		// @todo: Implement process?
-		return $this->dataSource->get($filter, $sort, $field, $embed);
+		// Process data given.
+		$processPayload = $this->process(__FUNCTION__, $data);
+
+		if($processPayload->getStatus() != 'valid')
+		{
+			return $processPayload;
+		}
+
+		return $this->dataSource->get($data);
 	}
 
 	/**
