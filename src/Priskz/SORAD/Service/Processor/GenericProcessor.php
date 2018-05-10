@@ -53,7 +53,7 @@ class GenericProcessor implements ProcessorInterface
 		$validateContextPayload = $this->validateContext($processData, $rules);
 
 		// Return sanitized data if no validation errors exist.
-		if($validateContextPayload->getStatus() != 'valid')
+		if( ! $validateContextPayload->isStatus(Payload::STATUS_VALID))
 		{
 			return $validateContextPayload;
 		}

@@ -89,7 +89,7 @@ abstract class GenericCrudService extends GenericService
 		// Process data given.
 		$processPayload = $this->process(__FUNCTION__, $data);
 
-		if($processPayload->getStatus() != 'valid')
+		if( ! $processPayload->isStatus(Payload::STATUS_VALID))
 		{
 			return $processPayload;
 		}
@@ -108,7 +108,7 @@ abstract class GenericCrudService extends GenericService
 		// Process data given.
 		$processPayload = $this->process(__FUNCTION__, $data);
 
-		if($processPayload->getStatus() != 'valid')
+		if( ! $processPayload->isStatus(Payload::STATUS_VALID))
 		{
 			return $processPayload;
 		}
@@ -128,7 +128,7 @@ abstract class GenericCrudService extends GenericService
 		// Process data given.
 		$processPayload = $this->process(__FUNCTION__, $data);
 
-		if($processPayload->getStatus() != 'valid')
+		if( ! $processPayload->isStatus(Payload::STATUS_VALID))
 		{
 			return $processPayload;
 		}

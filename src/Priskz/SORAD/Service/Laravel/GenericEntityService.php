@@ -152,7 +152,7 @@ class GenericEntityService extends GenericService
 		// Process the given data.
 		$processPayload = $this->process(__FUNCTION__, $data);
 
-		if($processPayload->getStatus() != 'valid')
+		if( ! $processPayload->isStatus(Payload::STATUS_VALID))
 		{
 			return $processPayload;
 		}
@@ -176,7 +176,7 @@ class GenericEntityService extends GenericService
 		// Process data given.
 		$processPayload = $this->process(__FUNCTION__, $data);
 
-		if($processPayload->getStatus() != 'valid')
+		if( ! $processPayload->isStatus(Payload::STATUS_VALID))
 		{
 			return $processPayload;
 		}
@@ -202,7 +202,7 @@ class GenericEntityService extends GenericService
 		// Process data given.
 		$processPayload = $this->process(__FUNCTION__, $data);
 
-		if($processPayload->getStatus() != 'valid')
+		if( ! $processPayload->isStatus(Payload::STATUS_VALID))
 		{
 			return $processPayload;
 		}
@@ -229,7 +229,7 @@ class GenericEntityService extends GenericService
 		// // Process data given.
 		// $processPayload = $this->process(__FUNCTION__, $data);
 
-		// if($processPayload->getStatus() != 'valid')
+		// if( ! $processPayload->isStatus(Payload::STATUS_VALID))
 		// {
 		// 	return $processPayload;
 		// }
@@ -324,7 +324,7 @@ class GenericEntityService extends GenericService
 		// Process data given.
 		$processPayload = $this->process(__FUNCTION__, $data);
 
-		if($processPayload->getStatus() != 'valid')
+		if( ! $processPayload->isStatus(Payload::STATUS_VALID))
 		{
 			return $processPayload;
 		}
@@ -359,7 +359,7 @@ class GenericEntityService extends GenericService
 		// Process data given.
 		$processPayload = $this->process(__FUNCTION__, $data);
 
-		if($processPayload->getStatus() != 'valid')
+		if( ! $processPayload->isStatus(Payload::STATUS_VALID))
 		{
 			return $processPayload;
 		}
@@ -397,7 +397,7 @@ class GenericEntityService extends GenericService
 		// Process the given data.
 		$processPayload = $this->process(__FUNCTION__, $data);
 
-		if($processPayload->getStatus() != 'valid')
+		if( ! $processPayload->isStatus(Payload::STATUS_VALID))
 		{
 			return $processPayload;
 		}
@@ -467,7 +467,7 @@ class GenericEntityService extends GenericService
 		// Process the given data.
 		$processPayload = $this->process('DELETE_REFERENCE', $data);
 
-		if($processPayload->getStatus() != 'valid')
+		if( ! $processPayload->isStatus(Payload::STATUS_VALID))
 		{
 			return $processPayload;
 		}
