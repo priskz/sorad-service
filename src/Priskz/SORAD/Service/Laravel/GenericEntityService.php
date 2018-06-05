@@ -164,33 +164,7 @@ class GenericEntityService extends GenericService
 	}
 
 	/**
-	 * @todo: Current data() and get() exist as duplicate functionality.
-	 * 
-	 * Data
-	 *
-	 * @param  array  $data
-	 * @return Payload
-	 */
-	public function data($data = [])
-	{
-		// Process data given.
-		$processPayload = $this->process(__FUNCTION__, $data);
-
-		if( ! $processPayload->isStatus(Payload::STATUS_VALID))
-		{
-			return $processPayload;
-		}
-
-		return $this->aggregate[self::getEntityType()]->get(
-			$processPayload->getData()['filter'],
-			$processPayload->getData()['sort'],
-			$processPayload->getData()['field'],
-			$processPayload->getData()['embed']
-		);
-	}
-
-	/**
-	 * @todo: Current data() and get() exist as duplicate functionality.
+	 * @todo: This needs to be updated to follow new get.
 	 * 
 	 * Get
 	 * 
@@ -224,7 +198,7 @@ class GenericEntityService extends GenericService
 	public function create($data)
 	{
 		// @todo: Implement processing
-		$processPayload = new Payload($data, 'valid'); // @todo: Super temporary WIP
+		$processPayload = new Payload($data, Payload::STATUS_VALID); // @todo: Super temporary WIP
 
 		// // Process data given.
 		// $processPayload = $this->process(__FUNCTION__, $data);
@@ -235,31 +209,31 @@ class GenericEntityService extends GenericService
 		// }
 
 		// Create the entity with the given data.
-		$entityPayload = $this->aggregate[self::getEntityType()]->create($processPayload->getData());
+		$aggregatePayload = $this->aggregate[self::getEntityType()]->create($processPayload->getData());
 
 		// No need to procede if dynamic content was not created.
-		if($entityPayload->getStatus() != 'created')
+		if( ! $aggregatePayload->isStatus(Payload::STATUS_CREATED))
 		{
-			return $entityPayload;
+			return $aggregatePayload;
 		}
 
 		// Create the newly created entity's EntityIdentifier.
-		$identifierPayload = $this->createIdentifier($entityPayload->getData());
+		$identifierPayload = $this->createIdentifier($aggregatePayload->getData());
 
-		if($identifierPayload->getStatus() != 'created')
+		if( ! $identifierPayload->isStatus(Payload::STATUS_CREATED))
 		{
 			return $identifierPayload;
 		}
 
 		// @todo: The following currently adds an additional query just for the ease of getting the full entity to return.
-		$createdEntityPayload = $this->getOneByUuid($entityPayload->getData()->getUuid());
+		$createdEntityPayload = $this->getOneByUuid($aggregatePayload->getData()->getUuid());
 
-		if($createdEntityPayload->getStatus() !== 'found')
+		if( ! $createdEntityPayload->isStatus(Payload::STATUS_FOUND))
 		{
 			return $createdEntityPayload;
 		}
 
-		return new Payload($createdEntityPayload->getData(), $entityPayload->getStatus());
+		return new Payload($createdEntityPayload->getData(), $aggregatePayload->getStatus());
 	}
 
 	/**
@@ -330,7 +304,9 @@ class GenericEntityService extends GenericService
 		}
 
 		// Find Entity(s).
-		$identifierPayload = $this->aggregate[IdentifierServiceProvider::getProviderKey()]->get([['field' => 'uuid', 'value' => $processPayload->getData()['uuid'], 'operator' => '=', 'or' => false]]);
+		$identifierPayload = $this->aggregate[IdentifierServiceProvider::getProviderKey()]->get(
+			['filter' => ['uuid' => $processPayload->getData()['uuid']]]
+		);
 
 		if($identifierPayload->getStatus() != 'found')
 		{
@@ -365,7 +341,9 @@ class GenericEntityService extends GenericService
 		}
 
 		// Find Entity(s).
-		$identifierPayload = $this->aggregate[IdentifierServiceProvider::getProviderKey()]->get([['field' => 'uuid', 'value' => $processPayload->getData()['uuid'], 'operator' => '=', 'or' => false]]);
+		$identifierPayload = $this->aggregate[IdentifierServiceProvider::getProviderKey()]->get(
+			['filter' => ['uuid' =>  $processPayload->getData()['uuid']]]
+		);
 
 		if($identifierPayload->getStatus() != 'found')
 		{
@@ -617,7 +595,9 @@ class GenericEntityService extends GenericService
 	 */
 	protected function getOneByIdentifier($entityIdentifier)
 	{
-		return $this->aggregate[IdentifierServiceProvider::getProviderKey()]->get([['field' => 'id', 'value' =>  $identifier->getEntityKey(), 'operator' => '=', 'or' => false]]);
+		return $this->aggregate[IdentifierServiceProvider::getProviderKey()]->first(
+			['filter' => ['id' => $identifier->getEntityKey()]]
+		);
 	}
 
 	/* =====================================================
@@ -632,14 +612,18 @@ class GenericEntityService extends GenericService
 	 */
 	public function getOneByUuid($uuid)
 	{
-		$identifierPayload = $this->aggregate[IdentifierServiceProvider::getProviderKey()]->get([['field' => 'uuid', 'value' =>  $uuid, 'operator' => '=', 'or' => false]]);
+		$identifierPayload = $this->aggregate[IdentifierServiceProvider::getProviderKey()]->first(
+			['filter' => ['uuid' => $uuid]]
+		);
 
 		if($identifierPayload->getStatus() != 'found')
 		{
 			return $identifierPayload;
 		}
 
-		return $this->aggregate[$this->formatEntityType($identifierPayload->getData()->first()->getEntityType())]->get([['field' => 'id', 'value' => $identifierPayload->getData()->first()->getEntityKey(), 'operator' => '=', 'or' => false]]);
+		return $this->aggregate[$this->formatEntityType($identifierPayload->getData()->getEntityType())]->first(
+			['filter' => ['id' => $identifierPayload->getData()->getEntityKey()]]
+		);
 	}
 
 	/**
@@ -671,7 +655,9 @@ class GenericEntityService extends GenericService
 			$sanitizedKey['entity_id']   = $key[1];
 		}
 
-		return $this->aggregate[$this->formatEntityType($sanitizedKey['entity_type'])]->get([['field' => 'id', 'value' => $sanitizedKey['entity_id'], 'operator' => '=', 'or' => false]]);
+		return $this->aggregate[$this->formatEntityType($sanitizedKey['entity_type'])]->first(
+			['filter' => ['id' => $sanitizedKey['entity_id']]]
+		);
 	}
 
 	/* =====================================================
