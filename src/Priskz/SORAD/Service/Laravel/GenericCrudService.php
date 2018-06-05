@@ -26,6 +26,11 @@ abstract class GenericCrudService extends GenericService
 				'rules'    => [],
 				'defaults' => [],
 			],
+			'FIRST' => [
+				'keys'     => [],
+				'rules'    => [],
+				'defaults' => [],
+			],
 			'CREATE' => [
 				'keys'     => [],
 				'rules'    => [],
@@ -95,6 +100,24 @@ abstract class GenericCrudService extends GenericService
 		}
 
 		return $this->dataSource->get($data);
+	}
+
+	/**
+	 * First
+	 *
+	 * @return Payload
+	 */
+	public function first($data = [])
+	{
+		// Process data given.
+		$processPayload = $this->process(__FUNCTION__, $data);
+
+		if( ! $processPayload->isStatus(Payload::STATUS_VALID))
+		{
+			return $processPayload;
+		}
+
+		return $this->dataSource->first($data);
 	}
 
 	/**
