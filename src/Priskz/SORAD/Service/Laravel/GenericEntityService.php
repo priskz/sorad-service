@@ -182,10 +182,10 @@ class GenericEntityService extends GenericService
 		}
 
 		return $this->aggregate[self::getEntityType()]->get(
-			$processPayload->getData()['filter'],
-			$processPayload->getData()['sort'],
-			$processPayload->getData()['field'],
-			$processPayload->getData()['embed']
+			$processPayload->getData('filter'),
+			$processPayload->getData('sort'),
+			$processPayload->getData('field'),
+			$processPayload->getData('embed')
 		);
 	}
 
@@ -305,7 +305,7 @@ class GenericEntityService extends GenericService
 
 		// Find Entity(s).
 		$identifierPayload = $this->aggregate[IdentifierServiceProvider::getProviderKey()]->get(
-			['filter' => ['uuid' => $processPayload->getData()['uuid']]]
+			['filter' => ['uuid' => $processPayload->getData('uuid')]]
 		);
 
 		if($identifierPayload->getStatus() != 'found')
@@ -342,7 +342,7 @@ class GenericEntityService extends GenericService
 
 		// Find Entity(s).
 		$identifierPayload = $this->aggregate[IdentifierServiceProvider::getProviderKey()]->get(
-			['filter' => ['uuid' =>  $processPayload->getData()['uuid']]]
+			['filter' => ['uuid' =>  $processPayload->getData('uuid')]]
 		);
 
 		if($identifierPayload->getStatus() != 'found')
@@ -386,12 +386,12 @@ class GenericEntityService extends GenericService
 		{
 			return $entityPayload;
 		}
-		
+
 		// Either get an existing entity with uuid given or create a new one with data given.
-		if(array_key_exists('uuid', $processPayload->getData()['reference']))
+		if(array_key_exists('uuid', $processPayload->getData('reference')))
 		{
 			// @todo: Make this more consistent - returns a collection.
-			$referencePayload = $this->getOneByUuid($processPayload->getData()['reference']['uuid']);
+			$referencePayload = $this->getOneByUuid($processPayload->getData('reference')['uuid']);
 
 			if($referencePayload->getStatus() != 'found')
 			{
@@ -401,9 +401,9 @@ class GenericEntityService extends GenericService
 			// @todo: Make this more consistent - extra instanciating.
 			$referencePayload = new Payload($referencePayload->getData(), 'found');
 		}
-		elseif(array_key_exists('reference_type', $processPayload->getData()['reference']))
+		elseif(array_key_exists('reference_type', $processPayload->getData('reference')))
 		{
-			$referencePayload = $this->create(['entity_type' => $processPayload->getData()['reference']['reference_type']] + $processPayload->getData()['reference']);
+			$referencePayload = $this->create(['entity_type' => $processPayload->getData('reference')['reference_type']] + $processPayload->getData('reference'));
 
 			if($referencePayload->getStatus() != 'created')
 			{
