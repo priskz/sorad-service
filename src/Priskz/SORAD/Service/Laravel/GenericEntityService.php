@@ -226,7 +226,7 @@ class GenericEntityService extends GenericService
 		}
 
 		// @todo: The following currently adds an additional query just for the ease of getting the full entity to return.
-		$createdEntityPayload = $this->getOneByUuid($aggregatePayload->getData()->getUuid());
+		$createdEntityPayload = $this->getOneByUuid($aggregatePayload->get('uuid'));
 
 		if( ! $createdEntityPayload->isStatus(Payload::STATUS_FOUND))
 		{
@@ -277,7 +277,7 @@ class GenericEntityService extends GenericService
 		}
 
 		// @todo: The following currently adds an additional query just for the ease of getting the full entity to return.
-		$updatedEntityPayload = $this->getOneByUuid($updatePayload->getData()->getUuid());
+		$updatedEntityPayload = $this->getOneByUuid($updatePayload->get('uuid'));
 
 		if($updatedEntityPayload->getStatus() !== 'found')
 		{
